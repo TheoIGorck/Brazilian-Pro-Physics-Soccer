@@ -16,14 +16,25 @@ public class BallTrigger : MonoBehaviour
                 {
                     if (players.GetIsFacingRight())
                     {
+                        GetComponentInParent<Ball>().SetIsPlayer1(false);
                         GetComponentInParent<Rigidbody2D>().AddForce(_players[1].GetKickForce());
                     }
                     else
                     {
+                        GetComponentInParent<Ball>().SetIsPlayer1(true);
                         GetComponentInParent<Rigidbody2D>().AddForce(_players[0].GetKickForce());
                     }
                 }
             }
+        }
+
+        if(collision.gameObject.name == "Player_Isaquias")
+        {
+            GetComponentInParent<Ball>().SetIsPlayer1(true);
+        }
+        else if(collision.gameObject.name == "Player_Elstor")
+        {
+            GetComponentInParent<Ball>().SetIsPlayer1(false);
         }
     }
 }

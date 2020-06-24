@@ -23,7 +23,7 @@ public class PlayerBase : MonoBehaviour
     private Quaternion _minRotation = Quaternion.Euler(new Vector3 (0, 0, -20));
     private Quaternion _currentRotation;
     private Vector3 _currentEulerAngles;
-    private bool _isFacingRight;
+    [SerializeField] private bool _isFacingRight = false;
     private bool _hasKicked;
     
     public void Move(float axis)
@@ -124,5 +124,27 @@ public class PlayerBase : MonoBehaviour
     public Vector2 GetKickForce()
     {
         return _kickForce;
+    }
+
+    public void SetImpulse(float impulse)
+    {
+        _playerImpulse = impulse;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _playerSpeed = speed;
+    }
+
+    public void SetScale(Vector3 scale)
+    {
+        transform.localScale = scale;
+    }
+
+    public void ResetDefault()
+    {
+        transform.localScale = new Vector3(0.5f, 0.5f, 1);
+        _playerSpeed = 5;
+        _playerImpulse = 7;
     }
 }
