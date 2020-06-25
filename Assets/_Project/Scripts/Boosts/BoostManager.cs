@@ -26,7 +26,6 @@ public class BoostManager : MonoBehaviour
         CheckOnDestroyTimeLimit();
         CheckIfEffectStarted();
         ResetPlayerAndBallDefault();
-
         Debug.Log(_ball.GetIsPlayer1());
     }
 

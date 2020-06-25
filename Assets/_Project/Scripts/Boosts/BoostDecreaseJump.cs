@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoostDecreaseJump : BoostPlayerBase
 {
     [SerializeField] private PlayerBase _player = default;
-    private float _playerImpulse = 6;
+    private float _playerImpulse = 5;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

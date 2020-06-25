@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoostSpeedUp : BoostPlayerBase
 { 
     [SerializeField] private PlayerBase _player = default;
-    private float _playerSpeed = 7;
+    private float _playerSpeed = 8;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
