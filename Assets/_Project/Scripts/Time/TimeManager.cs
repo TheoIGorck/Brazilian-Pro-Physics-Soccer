@@ -1,25 +1,50 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
-    [SerializeField] private MatchTime _matchTime = default;
-    [SerializeField] private TimeUI _matchTimeCanvas = default;
+    [SerializeField] 
+    private MatchTime _matchTime = default;
+    [SerializeField] 
+    private TimeUI _timeUI = default;
 
-    public void OnStart()
+    private bool _isUpdatingTime = true;
+    private float _stoppedTime;
+
+    public void Update()
     {
-        _matchTime.OnStart();
+        if(_isUpdatingTime)
+        {
+            _matchTime.UpdateMatchTime(_stoppedTime);
+            _timeUI.UpdateText(_matchTime.Minutes, _matchTime.Seconds);
+        }
+        else
+        {
+            _stoppedTime += Time.deltaTime;
+        }
     }
 
-    public void OnUpdate()
+    public void PauseTime()
     {
-        _matchTime.UpdateMatchTime();
-        _matchTimeCanvas.UpdateTimeText(_matchTime.GetMinutes(), _matchTime.GetSeconds());
+        _isUpdatingTime = false;
     }
 
-    public bool CheckEndGame()
+    public void ResumeTime()
     {
-        return _matchTime.CheckEndGame();
+        _isUpdatingTime = true;
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+    }
+
+    public bool IsMatchTimeOver()
+    {
+        return _matchTime.IsMatchTimeOver();
     }
 }

@@ -1,38 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerIsaquias : PlayerBase
 {
-    [SerializeField] GameObject[] _sceneObjects = default;
-    private bool isOnTop;
-
-    public override void SpecialPower(bool Button)
+    public override void Kick()
     {
-        if (Button)
+        if(PlayerFoot.transform.rotation.z > MinFootRotation.z)
         {
-            Physics2D.gravity = new Vector2(0, 9.8f);
-            //RotateObjects();
+            CurrentEulerAngles -= Vector3.forward * Time.deltaTime * FootRotateSpeed;
+            CurrentRotation.eulerAngles = CurrentEulerAngles;
+            PlayerFoot.transform.rotation = CurrentRotation;
         }
+
+        base.Kick();
     }
 
-    public void RotateObjects()
+    public override void ReturnFootToInitialPosition()
     {
-        if (isOnTop)
+        if (PlayerFoot.transform.rotation.z < MaxFootRotation.z)
         {
-            foreach (GameObject objects in _sceneObjects)
-            {
-                objects.transform.eulerAngles = new Vector3(0, 0, 180f);
-            }
-        }
-        else
-        {
-            foreach (GameObject objects in _sceneObjects)
-            {
-                objects.transform.eulerAngles = Vector3.zero;
-            }
+            CurrentEulerAngles += Vector3.forward * Time.deltaTime * FootRotateSpeed;
+            CurrentRotation.eulerAngles = CurrentEulerAngles;
+            PlayerFoot.transform.rotation = CurrentRotation;
         }
 
-        isOnTop = !isOnTop;
+        base.ReturnFootToInitialPosition();
     }
 }

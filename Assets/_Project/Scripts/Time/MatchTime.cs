@@ -1,34 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MatchTime : MonoBehaviour
 {
-    private float _startTime = 120f;
+    [SerializeField]
+    private float _startTime = 30f;
+    
     private float _matchTime = 1;
     private float _gameStartTime = 0;
     private float _gameTime = 0;
-    private string minutes = "0";
-    private string seconds = "0";
+    private string _minutes = "0";
+    private string _seconds = "0";
 
-    public void OnStart()
-    {
-        _gameStartTime = Time.time;
-    }
-
-    public void UpdateMatchTime()
+    public void UpdateMatchTime(float stoppedTime)
     {
         if (_matchTime > 0)
         {
-            _gameTime = Time.time - _gameStartTime;
+            _gameTime = (Time.time - stoppedTime) - _gameStartTime;
             _matchTime = _startTime - _gameTime;
 
-            minutes = ((int)_matchTime / 60).ToString();
-            seconds = (_matchTime % 60).ToString("f0");
+            _minutes = ((int)_matchTime / 60).ToString("00");
+            _seconds = (_matchTime % 60).ToString("00");
         }
     }
 
-    public bool CheckEndGame()
+    public bool IsMatchTimeOver()
     {
         if(_matchTime <= 0)
         {
@@ -38,13 +33,11 @@ public class MatchTime : MonoBehaviour
         return false;
     }
 
-    public string GetMinutes()
+    private void Start()
     {
-        return minutes;
+        _gameStartTime = Time.time;
     }
 
-    public string GetSeconds()
-    {
-        return seconds;
-    }
+    public string Minutes { get => _minutes; }
+    public string Seconds { get => _seconds; }
 }

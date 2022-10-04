@@ -1,27 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScoreTrigger : MonoBehaviour
 {
-    private bool _isPlayer1Score = false;
+    [SerializeField]
+    private Score _score;
+    [SerializeField]
+    private ScoreUI _scoreUI;
+
+    private void Awake()
+    {
+        IsActive = true;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 12)
+        if (collision.gameObject.layer == 12 && IsActive)
         {
-            _isPlayer1Score = true;
+            _score.Add();
+            _scoreUI.UpdateText(_score.ScoreAmount.ToString());
+            IsActive = false;
         }
     }
 
-    public bool GetIsPlayer1Score()
-    {
-        return _isPlayer1Score;
-    }
-
-    public void SetIsPlayer1Score(bool value)
-    {
-        _isPlayer1Score = value;
-
-    }
+    public bool IsActive { get; set; }
 }

@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GoalpostTrigger : MonoBehaviour
 {
-    [SerializeField] private GameObject _ball = default;
-    [SerializeField] private bool _isLeftGoalpost = false;
+    [SerializeField] 
+    private Ball _ball = default;
+    [SerializeField] 
+    private bool _isLeftGoalpost = false;
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -13,11 +13,11 @@ public class GoalpostTrigger : MonoBehaviour
         {
             if (_isLeftGoalpost)
             {
-                _ball.GetComponent<Rigidbody2D>().AddForce(new Vector2(0.05f, 0));
+                _ball.RigidBody.AddForce(new Vector2(0.05f, 0));
             }
             else
             {
-                _ball.GetComponent<Rigidbody2D>().AddForce(new Vector2(-0.05f, 0));
+                _ball.RigidBody.AddForce(new Vector2(-0.05f, 0));
             }
         }
     }

@@ -1,41 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] private PlayerBase[] _players = default;
+    [SerializeField] 
+    private PlayerBase[] _players = default;
     
     public void Move(int id, float axis)
     {
         _players[id].Move(axis);
     }
 
-    public void Jump(bool Button, int id, float axis)
+    public void Jump(bool button, int id, float axis)
     {
-        if(_players[id].isGrounded() && Button)
+        if(_players[id].IsGrounded() && button)
         {
-            _players[id].Jump(Button, axis);
+            _players[id].Jump(axis);
         }
     }
 
-    public void Kick(bool Button, int id, bool facing_Right)
+    public void Kick(bool button, int id)
     {
-        if (Button)
+        if (button)
         {
-            _players[id].Kick(Button, facing_Right);
+            _players[id].Kick();
         }
         else
         {
-            _players[id].ReturnFootToInitialPosition(facing_Right);
-        }
-    }
-
-    public void SpecialPower(bool Button, int id)
-    {
-        if (Button)
-        {
-            _players[id].SpecialPower(Button);
+            _players[id].ReturnFootToInitialPosition();
         }
     }
 }

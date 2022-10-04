@@ -1,33 +1,46 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField] private Score _score = default;
-    [SerializeField] private ScoreUI _scoreCanvas = default;
-    [SerializeField] private ScoreTrigger _scoreTrigger = default;
-    [SerializeField] private ScoreTrigger_P2 _scoreTrigger_P2 = default;
+    [SerializeField] 
+    private Score[] _scores = default;
+    [SerializeField] 
+    private ScoreTrigger[] _scoreTriggers = default;
+    [SerializeField] 
+    private MatchScoreScaler _matchScoreScaler;
 
-    public void OnUpdate()
-    { 
-        CheckCanScore();
-    }
-
-    public void CheckCanScore()
+    public void ResetTriggers()
     {
-        if(_scoreTrigger.GetIsPlayer1Score())
-        {
-            _score.AddPlayer2Score();
-            _scoreCanvas.UpdatePlayer2Text(_score.GetPlayer2Score().ToString());
-            _scoreTrigger.SetIsPlayer1Score(false);
-
-        }
-        else if(_scoreTrigger_P2.GetIsPlayer2Score())
-        {
-            _score.AddPlayer1Score();
-            _scoreCanvas.UpdatePlayer1Text(_score.GetPlayer1Score().ToString());
-            _scoreTrigger_P2.SetIsPlayer2Score(false);
-        }
+        _scoreTriggers[0].IsActive = true;
+        _scoreTriggers[1].IsActive = true;
+        CanScore = true;
     }
+
+    public bool IsADraw()
+    {
+        return _scores[0].ScoreAmount == _scores[1].ScoreAmount;
+    }
+
+    public bool IsPlayer1Winner()
+    {
+        return _scores[0].ScoreAmount > _scores[1].ScoreAmount;
+    }
+
+    public bool HasPlayerScored()
+    {
+        return !_scoreTriggers[0].IsActive || !_scoreTriggers[1].IsActive;
+    }
+
+    public bool HasPlayer1Scored()
+    {
+        return !_scoreTriggers[1].IsActive;
+    }
+
+    private void Start()
+    {
+        CanScore = true;
+    }
+
+    public MatchScoreScaler Scaler { get => _matchScoreScaler; }
+    public bool CanScore { get; set; }
 }

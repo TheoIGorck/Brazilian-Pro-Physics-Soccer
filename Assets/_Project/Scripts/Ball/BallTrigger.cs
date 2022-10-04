@@ -1,40 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BallTrigger : MonoBehaviour
 {
-    [SerializeField] private PlayerBase[] _players = default;
+    [SerializeField] 
+    private PlayerBase[] _players = default;
+    [SerializeField]
+    private Ball _ball;
+    [SerializeField]
+    private AudioManager _audioManager;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private int _horizontalSpeedThreshold = 12;
+    private int _vericalSpeedThreshold = -8;
+
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.gameObject.layer == 9)
+        string colliderName = collider.transform.root.name;
+
+        if(colliderName == "Player_Isaquias")
         {
-            foreach(PlayerBase players in _players)
+            _ball.LastPlayerToTouch = _players[0];
+        }
+        else if(colliderName == "Player_Elstor")
+        {
+            _ball.LastPlayerToTouch = _players[1];
+        }
+
+        if (collider.gameObject.layer == 9)
+        {
+            if (_ball.LastPlayerToTouch.HasKicked)
             {
-                if (players.GetHasKicked())
-                {
-                    if (players.GetIsFacingRight())
-                    {
-                        GetComponentInParent<Ball>().SetIsPlayer1(false);
-                        GetComponentInParent<Rigidbody2D>().AddForce(_players[1].GetKickForce());
-                    }
-                    else
-                    {
-                        GetComponentInParent<Ball>().SetIsPlayer1(true);
-                        GetComponentInParent<Rigidbody2D>().AddForce(_players[0].GetKickForce());
-                    }
-                }
+                _ball.RigidBody.AddForce(_ball.LastPlayerToTouch.KickForce);
+                _audioManager.PlayHighKick();
             }
         }
 
-        if(collision.gameObject.name == "Player_Isaquias")
+        Vector3 ballVelocity = _ball.RigidBody.velocity;
+
+        if(Mathf.Abs(ballVelocity.x) > _horizontalSpeedThreshold || _ball.RigidBody.velocity.y < _vericalSpeedThreshold)
         {
-            GetComponentInParent<Ball>().SetIsPlayer1(true);
-        }
-        else if(collision.gameObject.name == "Player_Elstor")
-        {
-            GetComponentInParent<Ball>().SetIsPlayer1(false);
+            _audioManager.PlayLowKick();
         }
     }
 }

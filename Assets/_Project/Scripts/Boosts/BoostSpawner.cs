@@ -1,45 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BoostSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject[] _boosts = default;
-    [SerializeField] private Transform[] _boostsPositions = default;
-    private GameObject _spawnedObject;
-    private bool _canSpawnBoost = true;
-    private int _positionIndex;
-    private int _minPositionIndex = 0;
-    private int _maxPositionIndex = 5;
-    private int _boostIndex;
-    private int _minBoostIndex = 0;
-    private int _maxBoostIndex = 10;
+    [SerializeField] 
+    private GameObject[] _boosts = default;
+    [SerializeField] 
+    private Transform[] _positions = default;
     
-    public GameObject SpawnBoost()
+    public GameObject Spawn()
     {
-        _spawnedObject = Instantiate(_boosts[RandomizeBoosts()], _boostsPositions[RandomizePosition()].position, Quaternion.identity);
-        return _spawnedObject;
+        GameObject spawnedObject = Instantiate(_boosts[GetRandomBoostIndex()], _positions[GetRandomPositionIndex()].position, Quaternion.identity);
+
+        return spawnedObject;
     }
 
-    public int RandomizeBoosts()
+    private void Awake()
     {
-        _boostIndex = Random.Range(_minBoostIndex, _maxBoostIndex);
-        return _boostIndex;
+        CanSpawn = true;
     }
 
-    public int RandomizePosition()
+    private int GetRandomBoostIndex()
     {
-        _positionIndex = Random.Range(_minPositionIndex, _maxPositionIndex);
-        return _positionIndex;
+        return Random.Range(0, _boosts.Length - 1);
     }
 
-    public void SetCanSpawn(bool canSpawn)
+    private int GetRandomPositionIndex()
     {
-        _canSpawnBoost = canSpawn;
+        return Random.Range(0, _positions.Length - 1);
     }
 
-    public bool GetCanSpawn()
-    {
-        return _canSpawnBoost;
-    }
+    public bool CanSpawn { get; set; }
 }
