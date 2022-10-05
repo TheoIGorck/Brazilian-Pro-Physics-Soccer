@@ -8,7 +8,7 @@ public abstract class BallBoostBase : MonoBehaviour, IBoost
 
     public void ResetBoost()
     {
-        Ball.Reset();
+        Ball?.Reset();
     }
 
     public void Initialize(Ball ball)
